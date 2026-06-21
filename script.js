@@ -1,6 +1,3 @@
-if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.href = "login.html";
-}
 
 const API = "https://phi-lab-server.vercel.app/api/v1/lab/issues";
 const container = document.getElementById("issuesContainer");
@@ -49,6 +46,7 @@ function displayIssues(issues) {
             prioColor = "#6b7280"; 
         }
 
+        // Card Labels Layout Builder
         let labelsHtml = "";
         const labelText = (issue.label || "").toLowerCase();
         
@@ -122,52 +120,80 @@ async function showIssue(id) {
         const statusLower = (issue.status || "").toLowerCase();
         const isOpen = statusLower === "open";
         
-        let tagClass = "tag-default";
-        const labelText = (issue.label || "").toLowerCase();
-        if (labelText === "bug") tagClass = "tag-bug";
-        else if (labelText === "help wanted") tagClass = "tag-help";
-        else if (labelText === "enhancement") tagClass = "tag-enhancement";
+        let modalTagsHtml = "";
+        const currentLabel = (issue.label || "").toLowerCase();
 
-        let prioClass = "prio-low";
-        const prioText = (issue.priority || "").toLowerCase();
-        if (prioText === "high") prioClass = "prio-high";
-        else if (prioText === "medium") prioClass = "prio-medium";
+        if (currentLabel === "bug") {
+            modalTagsHtml = `
+                <span style="font-size: 11px; padding: 4px 10px; border-radius: 6px; font-weight: bold; background: #fee2e2; color: #ef4444; display: inline-flex; align-items: center; gap: 4px;">🎯 BUG</span>
+                <span style="font-size: 11px; padding: 4px 10px; border-radius: 6px; font-weight: bold; background: #fef3c7; color: #d97706; display: inline-flex; align-items: center; gap: 4px;">🤝 HELP WANTED</span>
+            `;
+        } else if (currentLabel === "enhancement") {
+            modalTagsHtml = `
+                <span style="font-size: 11px; padding: 4px 10px; border-radius: 6px; font-weight: bold; background: #dcfce7; color: #16a34a; display: inline-flex; align-items: center; gap: 4px;">✨ ENHANCEMENT</span>
+            `;
+        } else {
+            modalTagsHtml = `
+                <span style="font-size: 11px; padding: 4px 10px; border-radius: 6px; font-weight: bold; background: #f3f4f6; color: #4b5563; display: inline-flex; align-items: center; gap: 4px;">📌 ${(issue.label || "ISSUE").toUpperCase()}</span>
+            `;
+        }
+
+        let modalPrioBg = "#fee2e2";
+        let modalPrioColor = "#ef4444";
+        const modalPrioText = (issue.priority || "").toLowerCase();
+        if (modalPrioText === "medium") {
+            modalPrioBg = "#fef3c7";
+            modalPrioColor = "#d97706";
+        } else if (modalPrioText === "low") {
+            modalPrioBg = "#f3f4f6";
+            modalPrioColor = "#6b7280";
+        }
 
         document.getElementById("modalContent").innerHTML = `
-            <div class="modal-body">
-                <div class="modal-header">
-                    <h2>${issue.title}</h2>
-                    <div class="modal-meta-row" style="gap: 10px; display: flex; align-items: center;">
-                        <img src="${isOpen ? 'assets/Open-Status.png' : 'assets/Closed- Status .png'}" alt="${issue.status}" height="20" style="object-fit: contain;">
-                        <span class="modal-meta-text">
-                            Opened by <b>${issue.author}</b> • ${new Date(issue.createdAt).toLocaleDateString('en-GB')}
-                        </span>
+            <div style="padding: 10px 5px;">
+                <h2 style="font-size: 20px; font-weight: bold; color: #111827; margin-bottom: 12px;">${issue.title}</h2>
+                
+                <!-- DYNAMIC STATUS LINE -->
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                    <span style="font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; color: white; background: ${isOpen ? '#10b981' : '#8b5cf6'};">
+                        ${isOpen ? 'Opened' : 'Closed'}
+                    </span>
+                    <span style="font-size: 13px; color: #6b7280;">
+                        • Opened by <b>${issue.author || 'anonymous'}</b> • ${issue.createdAt ? new Date(issue.createdAt).toLocaleDateString('en-GB') : 'Recent'}
+                    </span>
+                </div>
+
+                <!-- DYNAMIC LABELS GRID ROW -->
+                <div style="display: flex; gap: 6px; margin-bottom: 24px;">
+                    ${modalTagsHtml}
+                </div>
+
+                <!-- BODY LOG TEXT BLOCK -->
+                <div style="font-size: 14px; color: #4b5563; line-height: 1.6; margin-bottom: 24px;">
+                    ${issue.description || "No description details provided."}
+                </div>
+
+                <!-- METADATA GRID BLOCKS -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+                    <div>
+                        <label style="display: block; font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Assignee:</label>
+                        <div style="font-size: 14px; font-weight: bold; color: #111827;">${issue.author || 'Unassigned'}</div>
                     </div>
-                </div>
-
-                <div class="modal-tags">
-                    <span class="tag ${tagClass}">${issue.label}</span>
-                </div>
-
-                <div class="modal-desc">
-                    ${issue.description || "No description provided."}
-                </div>
-
-                <div class="modal-grid-info">
-                    <div class="info-block">
-                        <label>Assignee:</label>
-                        <div class="value">${issue.author}</div>
-                    </div>
-                    <div class="info-block">
-                        <label>Priority:</label>
+                    <div>
+                        <label style="display: block; font-size: 12px; color: #9ca3af; margin-bottom: 4px;">Priority:</label>
                         <div>
-                            <span class="priority-pill ${prioClass}">${issue.priority}</span>
+                            <span style="display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; color: ${modalPrioColor}; background: ${modalPrioBg}; text-transform: uppercase;">
+                                ${issue.priority || 'LOW'}
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button class="modal-close-btn" onclick="issueModal.close()">Close</button>
+                <!-- BUTTON FOOTER CLOSER ACTIONS -->
+                <div style="display: flex; justify-content: flex-end;">
+                    <button style="padding: 10px 24px; background: #4f46e5; color: white; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer;" onclick="issueModal.close()">
+                        Close
+                    </button>
                 </div>
             </div>
         `;
@@ -181,55 +207,47 @@ async function showIssue(id) {
 document.getElementById("allBtn").addEventListener("click", () => {
     setActive("allBtn");
     displayIssues(allIssues);
-    document.getElementById("issueCount").textContent = allIssues.length;
+document.getElementById("issueCount").textContent = allIssues.length;
 });
-
 document.getElementById("openBtn").addEventListener("click", () => {
-    setActive("openBtn");
-    const openIssues = allIssues.filter(
-        issue => issue.status.toLowerCase() === "open"
-    );
-    displayIssues(openIssues);
-    document.getElementById("issueCount").textContent = openIssues.length;
+setActive("openBtn");
+const openIssues = allIssues.filter(
+issue => issue.status.toLowerCase() === "open"
+);
+displayIssues(openIssues);
+document.getElementById("issueCount").textContent = openIssues.length;
 });
-
 document.getElementById("closedBtn").addEventListener("click", () => {
-    setActive("closedBtn");
-    const closedIssues = allIssues.filter(
-        issue => issue.status.toLowerCase() === "closed"
-    );
-    displayIssues(closedIssues);
-    document.getElementById("issueCount").textContent = closedIssues.length;
+setActive("closedBtn");
+const closedIssues = allIssues.filter(
+issue => issue.status.toLowerCase() === "closed"
+);
+displayIssues(closedIssues);
+document.getElementById("issueCount").textContent = closedIssues.length;
 });
-
 function setActive(id) {
-    document.querySelectorAll(".tab").forEach(btn => {
-        btn.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
-}
-
-document.getElementById("searchInput").addEventListener("input", async (e) => {
-    const text = e.target.value.trim();
-
-    if (!text) {
-        displayIssues(allIssues);
-        document.getElementById("issueCount").textContent = allIssues.length;
-        return;
-    }
-
-    try {
-        const res = await fetch( `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`);
-        const result = await res.json();
-        const searchResults = result.data || [];
-        displayIssues(searchResults);
-        document.getElementById("issueCount").textContent = searchResults.length;
-
-
-        
-    } catch (error) {
-        console.log(error);
-    }
+document.querySelectorAll(".tab").forEach(btn => {
+btn.classList.remove("active");
 });
-
+document.getElementById(id).classList.add("active");
+}
+document.getElementById("searchInput").addEventListener("input", async (e) => {
+const text = e.target.value.trim();
+if (!text) {
+displayIssues(allIssues);
+document.getElementById("issueCount").textContent = allIssues.length;
+return;
+}
+try {
+const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${text}`);
+const result = await res.json();
+const searchResults = result.data || [];
+displayIssues(searchResults);
+document.getElementById("issueCount").textContent = searchResults.length;
+} catch (error) {
+console.log(error);
+}
+});
 loadIssues();
+
+
