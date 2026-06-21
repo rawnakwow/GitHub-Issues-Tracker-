@@ -15,7 +15,7 @@ loginBtn.addEventListener("click", () => {
 
         localStorage.setItem("isLoggedIn", "true");
 
-        window.location.href = "index.html";
+        window.location.href = "issues.html";
 
     } else {
 
