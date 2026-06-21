@@ -67,10 +67,10 @@ const add = (a, b) => a + b;
 ### 5. What are Template Literals?
 Template literals are a modern way to create strings in JavaScript using backticks (`) instead of single or double quotes.
 
-`example :`
+**`example:`**
 
 
-`with :`
+**with:**
 
 const name = "John";
 const age = 25;
