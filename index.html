@@ -26,21 +26,51 @@
 </nav>
 
 
+<div class="container">
+    <div class="tabs-box">
+        <div class="tabs">
+            <button id="allBtn" class="tab active">All</button>
+            <button id="openBtn" class="tab">Open</button>
+            <button id="closedBtn" class="tab">Closed</button>
+        </div>
+    </div>
+
+   
+    <div class="stats">
+        <div class="stats-info">
+           
+            <img src="assets/Aperture.png" alt="Icon" class="grid-icon" style="width: 38px; height: 38px; padding: 0; display: block; object-fit: contain;">
+            <div>
+                <h3><span id="issueCount">0</span> Issues</h3>
+                <p>Track and manage your project issues</p>
+            </div>
+        </div>
+        <div class="stats-legend">
+            
+            <span class="legend-item" style="gap: 8px;">
+                <img src="assets/Open-Status.png" alt="Open Status Indicator" height="14" style="object-fit: contain;"> 
+                <span id="openCount">Open: 0</span>
+            </span>
+            <span class="legend-item" style="gap: 8px;">
+                <img src="assets/Closed- Status .png" alt="Closed Status Indicator" height="14" style="object-fit: contain;"> 
+                <span id="closedCount">Closed: 0</span>
+            </span>
+        </div>
+    </div>
+
+    <div id="loader">Loading Issues...</div>
+    <div id="issuesContainer" class="issues-grid"></div>
+</div>
 
 
 
 
+<dialog id="issueModal">
+    <div id="modalContent"></div>
+</dialog>
 
 
-
-
-
-
-
-
-
-
-
+<script src="script.js"></script>
 
 
 </body>
