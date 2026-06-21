@@ -1,1 +1,1 @@
-# GitHub-Issues-Tracker-
+# GitHub Issues Tracker
