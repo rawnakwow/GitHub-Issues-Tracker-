@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("index.html");
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Issues Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="assets/github-logo.png" type="image/png">
 
 
 </head>
 <body>
+
+    
     <nav>
     <div class="nav-left">
        
@@ -19,7 +28,7 @@
     <div class="nav-right">
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search issues...">
-            <button id="searchBtn" style="display: none;"></button>
+            <button id="searchBtn" hidden></button>
         </div>
         <button class="new-issue-btn">+ New Issue</button>
     </div>
@@ -39,7 +48,7 @@
     <div class="stats">
         <div class="stats-info">
            
-            <img src="assets/Aperture.png" alt="Icon" class="grid-icon" style="width: 38px; height: 38px; padding: 0; display: block; object-fit: contain;">
+            <img src="assets/Aperture.png" alt="Icon" class="grid-icon">
             <div>
                 <h3><span id="issueCount">0</span> Issues</h3>
                 <p>Track and manage your project issues</p>
@@ -47,11 +56,11 @@
         </div>
         <div class="stats-legend">
             
-            <span class="legend-item" style="gap: 8px;">
+            <span class="legend-item">
                 <img src="assets/Open-Status.png" alt="Open Status Indicator" height="14" style="object-fit: contain;"> 
                 <span id="openCount">Open: 0</span>
             </span>
-            <span class="legend-item" style="gap: 8px;">
+            <span class="legend-item">
                 <img src="assets/Closed- Status .png" alt="Closed Status Indicator" height="14" style="object-fit: contain;"> 
                 <span id="closedCount">Closed: 0</span>
             </span>
