@@ -8,27 +8,27 @@
 ### 1. Difference between var, let and const?
 In javascript let, var, and const are used to declare variablrs, but they are different in scope. 
 
-var
+`var`
 var is function-scoped and allows redeclaration and reassignment. 
-Example : 
+`Example :` 
 var a = 10;
 var a = 20; 
 
-let
+`let`
 let is block-scoped and can be reassigned but not redeclared in the same scope.
-Example : 
+`Example : `
 let b = 10;
 b= 20; 
 but can not : 
 let b =10;
 let b = 20 ; // error
 
-const 
+`const`
 Const is also block-scoped, but its value cannot be reassigned after initialization.
 Once a value is assigned to a const variable, none can assign a new value to that variable later.
 So, making it useful for values that should remain constant.
 
-Example :
+`Example :`
 const c = 10;
  c = 20; // Error
 
@@ -36,7 +36,7 @@ const c = 10;
 
 Spread Operator is {...} an oparetor which allows an iterable such as an array or an object to be expanded into individual elements.
 It is commonly used to copy arrays and pass multiple values to functions.
-Example :
+`Example :`
 const user = { name: "Rawnak" };
 const updatedUser = { ...user, age: 26 };
 
@@ -55,7 +55,7 @@ forEach() executes a function for each element in the array but does not return 
 ### 4. What is Arrow Function?
 
 An arrow function is a shorter syntax way of writing functions in JavaScript.
-example :
+`example :`
 
 const add = (a, b) => {
   return a + b;
@@ -67,16 +67,16 @@ const add = (a, b) => a + b;
 ### 5. What are Template Literals?
 Template literals are a modern way to create strings in JavaScript using backticks (`) instead of single or double quotes.
 
-example :
+`example :`
 
 
-with :
+`with :`
 
 const name = "John";
 const age = 25;
 console.log(`My name is ${name} and I am ${age} years old.`);
 
-with out :
+`with out :`
 
 const name = "John";
 const age = 25;
